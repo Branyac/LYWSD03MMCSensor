@@ -1,0 +1,27 @@
+#content {
+    margin: 0 auto;
+    padding: 5em;
+    text-align: center;
+    width: 50em;
+}
+
+.section {
+    margin-bottom: 3em;
+}
+
+.section .title {
+    font-size: 3em;
+}
+
+#measurements {
+    font-size: 5em;
+}
+
+#measurements #temperature, #measurements #humidity {
+    font-weight: bold;
+}
+
+#log {
+    font-size: 1.5em;
+    text-align: left;
+}
