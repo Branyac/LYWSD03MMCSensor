@@ -24,13 +24,14 @@ class LYWSD03MMCSensor {
 
         const maxRetries = 3;
 
+        let measurementInterval = 60000;
         let isMeasurementOk = false;
         let retries = 0;
         do {
             do {
                 try {
                     await this.doMeasurement();
-                    await this.sleep(60000);
+                    await this.sleep(measurementInterval);
                     isMeasurementOk = true;
                 }
                 catch (err) {
@@ -40,7 +41,7 @@ class LYWSD03MMCSensor {
             } while (!isMeasurementOk && retries < maxRetries && this.isMonitorModeEnabled);
 
             if (retries > maxRetries) {
-                await this.publishLogMessage('Max retries reached. Can\'t get measurement');
+                await this.publishLogMessage('Max retries reached. Can\'t get measurement.');
             }
 
         } while (this.isMonitorModeEnabled)
@@ -49,7 +50,7 @@ class LYWSD03MMCSensor {
     async stopMonitor() {
         this.isMonitorModeEnabled = false;
 
-        await this.publishLogMessage('Monitor mode finished');
+        await this.publishLogMessage('Monitor mode finished.');
     }
 
     async doMeasurement() {
@@ -76,7 +77,7 @@ class LYWSD03MMCSensor {
             await this.publishLogMessage('Bluetooth connection established.');
         }
         else {
-            throw 'Bluetooth conection failed';
+            throw 'Bluetooth conection failed.';
         }
 
         return connection;
