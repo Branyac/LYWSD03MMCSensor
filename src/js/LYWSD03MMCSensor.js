@@ -22,9 +22,27 @@ class LYWSD03MMCSensor {
         this.isMonitorModeEnabled = true;
         await this.publishLogMessage('Monitor mode started');
 
+        const maxRetries = 3;
+
+        let isMeasurementOk = false;
+        let retries = 0;
         do {
-            await this.doMeasurement();
-            await this.sleep(60000);
+            do {
+                try {
+                    await this.doMeasurement();
+                    await this.sleep(60000);
+                    isMeasurementOk = true;
+                }
+                catch (err) {
+                    retries++;
+                    await this.publishLogMessage('Measurement failed. Retriying... (Attempt ' + retries + ' of ' + maxRetries + ')');
+                }
+            } while (!isMeasurementOk && retries < maxRetries && this.isMonitorModeEnabled);
+
+            if (retries > maxRetries) {
+                await this.publishLogMessage('Max retries reached. Can\'t get measurement');
+            }
+
         } while (this.isMonitorModeEnabled)
     }
 
@@ -41,6 +59,7 @@ class LYWSD03MMCSensor {
         }
         catch (err) {
             await this.publishLogMessage('Error: ' + err);
+            throw err;
         }
         finally {
             try {
@@ -52,19 +71,13 @@ class LYWSD03MMCSensor {
     async connect() {
         await this.publishLogMessage('Connecting to bluetooth device...');
 
-        let connection = null;
-        let retries = 0;
-        do {
-            if(retries > 3) {
-                throw 'Can\'t connect to the device';
-            }
-
-            connection = await this.device.gatt.connect();
-            retries++;
+        let connection = await this.device.gatt.connect();
+        if (this.device.gatt.connected) {
+            await this.publishLogMessage('Bluetooth connection established.');
         }
-        while (!this.device.gatt.connected);
-
-        await this.publishLogMessage('Bluetooth connection established.');
+        else {
+            throw 'Bluetooth conection failed';
+        }
 
         return connection;
     }
