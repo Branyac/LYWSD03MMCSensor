@@ -1,11 +1,24 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="css/style.css">
+
     <script src="js/LYWSD03MMCSensor.js"></script>
 
     <script>
         function log(message) {
-            console.log(new Date().toLocaleString() + ': ' + message);
+            let messageWithDate = new Date().toLocaleString() + ': ' + message;
+            console.log(messageWithDate);
+
+            let messageNode = document.createElement('div');
+            messageNode.classList.add('logMessage');
+            messageNode.textContent = messageWithDate;
+
+            document.getElementById('log').appendChild(messageNode);
+        }
+
+        function setHtml(id, value) {
+            document.getElementById(id).innerHTML = value;
         }
 
         function configureEventListeners() {
@@ -15,12 +28,14 @@
 
             document.addEventListener('onMeasurement', (e) => {
                 log('Temp/Humi: ' + e.detail.temperature + ' °C / ' + e.detail.humidity + ' %');
+                setHtml('temperature', e.detail.temperature);
+                setHtml('humidity', e.detail.humidity);
             });
         }
         configureEventListeners();
 
         async function onWatchAdvertisementsButtonClick() {
-            log('Requesting any Bluetooth device...');
+            log('Searching LYWSD03MMC devices...');
             let device = await navigator.bluetooth.requestDevice({
                 filters: [
                     { name: 'LYWSD03MMC' },
@@ -35,7 +50,30 @@
 </head>
 
 <body>
-    <a onclick='onWatchAdvertisementsButtonClick()'>Probar</a>
+    <div id="content">
+        <div class="section">
+            <span class="title">Connection</span>
+            <div id="button">
+                <input type="button" onclick='onWatchAdvertisementsButtonClick()'
+                    value="Connect to LYWSD03MMC sensor" />
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="title">Last measured values</span>
+            <div id="measurements">
+                <span id="temperature">?</span> ºC
+                <span id="humidity">?</span> %
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="title">Log</span>
+            <div id="log">
+                <div class="logMessage"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

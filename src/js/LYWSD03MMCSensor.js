@@ -35,7 +35,7 @@ class LYWSD03MMCSensor {
                 }
                 catch (err) {
                     retries++;
-                    await this.publishLogMessage('Measurement failed. Retriying... (Attempt ' + retries + ' of ' + maxRetries + ')');
+                    await this.publishLogMessage('Measurement failed. Retrying... (Attempt ' + retries + ' of ' + maxRetries + ')');
                 }
             } while (!isMeasurementOk && retries < maxRetries && this.isMonitorModeEnabled);
 
