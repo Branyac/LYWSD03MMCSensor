@@ -14,7 +14,7 @@ See file [index.html](src/index.html)
 
 ## How to use
 
-1. Include a reference to the script file [LYWSD03MMCSensor.js](src\js\LYWSD03MMCSensor.js) in your HTML page.
+1. Include a reference to the script file [LYWSD03MMCSensor.js](src/js/LYWSD03MMCSensor.js) in your HTML page.
 2. Use Bluetooth Web API to select the device you want to connect to.
 3. Create a new instance of `LYWSD03MMCSensor` and pass the device in the constructor.
 4. Add event listener for `onMeasurement` to get temperature and humidity measurements.
@@ -22,4 +22,4 @@ See file [index.html](src/index.html)
 6. Call method `startMonitor()` to start the periodic measurements.
 
 ## Advanced
-- Measurement interval is set to 60000 milliseconds. To change the interval open the file [LYWSD03MMCSensor.js](src\js\LYWSD03MMCSensor.js) and change the value of the variable `measurementInterval`
+- Measurement interval is set to 60000 milliseconds. To change the interval open the file [LYWSD03MMCSensor.js](src/js/LYWSD03MMCSensor.js) and change the value of the variable `measurementInterval`
