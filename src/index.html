@@ -27,7 +27,7 @@
             });
 
             document.addEventListener('onMeasurement', (e) => {
-                log('Temp/Humi: ' + e.detail.temperature + ' °C / ' + e.detail.humidity + ' %');
+                log('Temp/Humi: ' + e.detail.temperature + ' °C / ' + e.detail.humidity + ' %.');
                 setHtml('temperature', e.detail.temperature);
                 setHtml('humidity', e.detail.humidity);
             });
